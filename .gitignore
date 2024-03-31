@@ -1,0 +1,45 @@
+# Ignore database files
+*.sqlite3
+*.db
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore local settings (settings_local.py)
+local_settings.py
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore media and static files
+media/
+staticfiles/
+
+# Ignore logs
+*.log
+
+# Ignore temporary files
+*.swp
+*~
+
+# Ignore configuration files for IDEs
+.idea/
+.vscode/
+
+# Ignore environment files
+.env
+
+# Ignore Django migration files
+/migrations/
+
+# Ignore pipenv files
+Pipfile
+Pipfile.lock
+TODO.py
+media
+.idea
+python

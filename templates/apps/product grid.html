@@ -1,0 +1,366 @@
+{% extends 'base/base2.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}Product Grid{% endblock %}
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+{% block content %}
+                <div class="card mt-2 mb-2">
+    <div class="card-header bg-light">
+        <div class="row align-items-center">
+            <div class="col">
+                <h5 class="mb-0" id="followers"></h5>
+            </div>
+            <div class="col text-end"><a class="font-sans-serif" href="/category">Kategoriyalar</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body bg-light px-1 py-0">
+        <div class="row g-0 text-center fs--1">
+            {% for category in categories %}
+                    <div class="col-4 col-md-4 col-lg-3 col-xx1-2 mb-1">
+
+                        	<div class="bg-white dark__bg-1100 p-1 h-100"><a href="{{ category.name }}"><img class="img-thumbnail img-fluid  mb-3 shadow-sm" src="/media/category_images/7AA93102-81A6-41E5-9DDA-9CA2C6427E3B.png" alt="" width="100"></a>
+                            <h6 class="mb-1"><a href="{{ category.name }}">{{ category.name }}</a>
+                            </h6>
+                            <p class="fs--2 mb-1"></p>
+                        </div>
+                    </div>
+            {% endfor %}
+            </div>
+    </div>
+</div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row flex-between-center">
+                            <div class="col-sm-auto mb-2 mb-sm-0">
+                                <h6 class="mb-0">Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ page_obj.paginator.count }} Products</h6>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="row gx-2 align-items-center">
+                                    <div class="col-auto">
+                                        <form class="row gx-2">
+                                            <div class="col-auto"><small>Sort by:</small></div>
+                                            <div class="col-auto">
+                                                <select class="form-select form-select-sm" aria-label="Bulk actions">
+                                                    <option selected="">Best Match</option>
+                                                    <option value="Refund">Newest</option>
+                                                    <option value="Delete">Price</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-auto pe-0"><a class="text-600 px-1"
+                                                                  href="app/e-commerce/product/product-list.html"
+                                                                  data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                  title="Product List"><span
+                                            class="fas fa-list-ul"></span></a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            {% for product in products %}
+                                <div class="mb-4 col-md-6 col-lg-4">
+                                <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">
+                                <div class="overflow-hidden">
+                                    <div class="position-relative rounded-top overflow-hidden"><a class="d-block"
+                                                                                                  href="{% url 'product_detail' pk=product.pk %}"><img
+                                            {% if product.images.first.image.url %}
+                                            class="img-fluid rounded-top" src="{{ product.images.first.image.url }}"
+                                            {% else %}
+                                            class="img-fluid rounded-top" src="{% static 'apps/assets/img/products/1-2.jpg' %}"
+                                            {% endif %}
+                                            {% if product.is_new %}
+                                            alt=""/></a><span
+                                            class="badge rounded-pill bg-success position-absolute mt-2 me-2 z-index-2 top-0 end-0">New</span>
+                                            {% else %}
+                                            alt=""/></a><span
+                                            class="badge rounded-pill bg-success position-absolute mt-2 me-2 z-index-2 top-0 end-0"></span>
+                                            {% endif %}
+                                    </div>
+                                    <div class="p-3">
+                                        <h5 class="fs-0"><a class="text-dark"
+                                                            href="{% url 'product_detail' pk=product.pk %}">{{ product.name }}</a>
+                                        </h5>
+                                        <p class="fs--1 mb-3"><a class="text-500" href="#!">{{ product.category }}</a>
+                                        </p>
+                                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3">
+                                            ${{ product.sell_price }}
+                                            <del class="ms-2 fs--1 text-500">${{ product.price }} </del>
+                                        </h5>
+                                        <p class="fs--1 mb-1">Shipping Cost:
+                                            <strong>${{ product.shipping_cost }}</strong></p>
+                                        {% if product.is_available %}
+                                        <p class="fs--1 mb-1">Stock: <strong class="text-success">Available</strong>
+                                            {% else %}
+                                            <p class="fs--1 mb-1">Stock: <strong id="sold-out-text" style="color: red; font-weight: bold; font-size: 12px;">Sold Out</strong>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-between-center px-3">
+                                <div><span class="fa fa-star text-warning"></span><span
+                                        class="fa fa-star text-warning"></span><span
+                                        class="fa fa-star text-warning"></span><span
+                                        class="fa fa-star text-warning"></span><span class="fa fa-star text-300"></span><span
+                                        class="ms-1">(8)</span>
+                                </div>
+                                <div>
+                                    <a class="btn btn-sm btn-falcon-default me-2"
+                                        href="{% url 'wishlist_create' product.id %}" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Add to Wish List"
+                                        {% if user.id|has_wishlist:product.id %}
+                                        style="background-color: red; color: white"
+                                        {% else %}
+                                        style="background-color: white; color: red"
+                                        {% endif %}>
+                                    <span class="far fa-heart"></span>
+                                </a>
+                                    <a class="btn btn-sm btn-falcon-default"
+                                                                           href="#!" data-bs-toggle="tooltip"
+                                                                           data-bs-placement="top"
+                                                                           title="Add to Cart"><span
+                                        class="fas fa-cart-plus"></span></a></div>
+
+                            </div>
+                            </div>
+                            </div>
+                         {% endfor %}
+                            {#                <div class="mb-4 col-md-6 col-lg-4">#}
+                            {#                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">#}
+                            {#                    <div class="overflow-hidden">#}
+                            {#                      <div class="position-relative rounded-top overflow-hidden">#}
+                            {#                        <div class="swiper-container theme-slider" data-swiper='{"autoplay":true,"autoHeight":true,"spaceBetween":5,"loop":true,"loopedSlides":5,"navigation":{"nextEl":".swiper-button-next","prevEl":".swiper-button-prev"}}'>#}
+                            {#                          <div class="swiper-wrapper">#}
+                            {#                            <div class="swiper-slide"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="rounded-top img-fluid" src="{% static 'apps/assets/img/products/1.jpg' %}" alt="" /></a></div>#}
+                            {#                            <div class="swiper-slide"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="rounded-top img-fluid" src="{% static 'apps/assets/img/products/1-2.jpg' %}" alt="" /></a></div>#}
+                            {#                            <div class="swiper-slide"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="rounded-top img-fluid" src="{% static 'apps/assets/img/products/1-3.jpg' %}" alt="" /></a></div>#}
+                            {#                          </div>#}
+                            {#                          <div class="swiper-nav">#}
+                            {#                            <div class="swiper-button-next swiper-button-white"></div>#}
+                            {#                            <div class="swiper-button-prev swiper-button-white"></div>#}
+                            {#                          </div>#}
+                            {#                        </div><span class="badge rounded-pill bg-success position-absolute mt-2 me-2 z-index-2 top-0 end-0">New</span>#}
+                            {#                      </div>#}
+                            {#                      <div class="p-3">#}
+                            {#                        <h5 class="fs-0"><a class="text-dark" href="app/e-commerce/product/product-details.html">Apple MacBook Pro (15&quot; Retina, Touch Bar, 2.2GHz 6-Core Intel Core i7, 16GB RAM, 256GB SSD) - Space Gray (Latest Model)</a></h5>#}
+                            {#                        <p class="fs--1 mb-3"><a class="text-500" href="#!">Computer &amp; Accessories</a></p>#}
+                            {#                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3"> $7199#}
+                            {#                        </h5>#}
+                            {#                        <p class="fs--1 mb-1">Shipping Cost: <strong>$65</strong></p>#}
+                            {#                        <p class="fs--1 mb-1">Stock: <strong class="text-danger">Sold-Out</strong>#}
+                            {#                        </p>#}
+                            {#                      </div>#}
+                            {#                    </div>#}
+                            {#                    <div class="d-flex flex-between-center px-3">#}
+                            {#                      <div><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt text-warning star-icon"></span><span class="ms-1">(20)</span>#}
+                            {#                      </div>#}
+                            {#                      <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span class="fas fa-cart-plus"></span></a></div>#}
+                            {#                    </div>#}
+                            {#                  </div>#}
+                            {#                </div>#}
+                            {#                <div class="mb-4 col-md-6 col-lg-4">#}
+                            {#                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">#}
+                            {#                    <div class="overflow-hidden">#}
+                            {#                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="img-fluid rounded-top" src="{% static 'apps/assets/img/products/4.jpg' %}" alt="" /></a>#}
+                            {#                      </div>#}
+                            {#                      <div class="p-3">#}
+                            {#                        <h5 class="fs-0"><a class="text-dark" href="app/e-commerce/product/product-details.html">Apple iPad Air 2019 (3GB RAM, 128GB ROM, 8MP Main Camera)</a></h5>#}
+                            {#                        <p class="fs--1 mb-3"><a class="text-500" href="#!">Mobile &amp; Tabs</a></p>#}
+                            {#                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3"> $562.5#}
+                            {#                          <del class="ms-2 fs--1 text-500">$750 </del>#}
+                            {#                        </h5>#}
+                            {#                        <p class="fs--1 mb-1">Shipping Cost: <strong>$47</strong></p>#}
+                            {#                        <p class="fs--1 mb-1">Stock: <strong class="text-success">Available</strong>#}
+                            {#                        </p>#}
+                            {#                      </div>#}
+                            {#                    </div>#}
+                            {#                    <div class="d-flex flex-between-center px-3">#}
+                            {#                      <div><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt text-warning star-icon"></span><span class="fa fa-star text-300"></span><span class="fa fa-star text-300"></span><span class="ms-1">(14)</span>#}
+                            {#                      </div>#}
+                            {#                      <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span class="fas fa-cart-plus"></span></a></div>#}
+                            {#                    </div>#}
+                            {#                  </div>#}
+                            {#                </div>#}
+                            {#                <div class="mb-4 col-md-6 col-lg-4">#}
+                            {#                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">#}
+                            {#                    <div class="overflow-hidden">#}
+                            {#                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="img-fluid rounded-top" src="{% static 'apps/assets/img/products/3.jpg' %}" alt="" /></a>#}
+                            {#                      </div>#}
+                            {#                      <div class="p-3">#}
+                            {#                        <h5 class="fs-0"><a class="text-dark" href="app/e-commerce/product/product-details.html">Apple iPhone XS Max (4GB RAM, 512GB ROM, 12MP Main Camera)</a></h5>#}
+                            {#                        <p class="fs--1 mb-3"><a class="text-500" href="#!">Mobile &amp; Tabs</a></p>#}
+                            {#                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3"> $1050#}
+                            {#                        </h5>#}
+                            {#                        <p class="fs--1 mb-1">Shipping Cost: <strong>$65</strong></p>#}
+                            {#                        <p class="fs--1 mb-1">Stock: <strong class="text-success">Available</strong>#}
+                            {#                        </p>#}
+                            {#                      </div>#}
+                            {#                    </div>#}
+                            {#                    <div class="d-flex flex-between-center px-3">#}
+                            {#                      <div><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt text-warning star-icon"></span><span class="ms-1">(13)</span>#}
+                            {#                      </div>#}
+                            {#                      <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span class="fas fa-cart-plus"></span></a></div>#}
+                            {#                    </div>#}
+                            {#                  </div>#}
+                            {#                </div>#}
+                            {#                <div class="mb-4 col-md-6 col-lg-4">#}
+                            {#                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">#}
+                            {#                    <div class="overflow-hidden">#}
+                            {#                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="img-fluid rounded-top" src="{% static 'apps/assets/img/products/8.jpg' %}" alt="" /></a><span class="badge rounded-pill bg-success position-absolute mt-2 me-2 z-index-2 top-0 end-0">New</span>#}
+                            {#                      </div>#}
+                            {#                      <div class="p-3">#}
+                            {#                        <h5 class="fs-0"><a class="text-dark" href="app/e-commerce/product/product-details.html">Canon Standard Zoom Lens</a></h5>#}
+                            {#                        <p class="fs--1 mb-3"><a class="text-500" href="#!">Camera</a></p>#}
+                            {#                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3"> $400#}
+                            {#                          <del class="ms-2 fs--1 text-500">$500 </del>#}
+                            {#                        </h5>#}
+                            {#                        <p class="fs--1 mb-1">Shipping Cost: <strong>$60</strong></p>#}
+                            {#                        <p class="fs--1 mb-1">Stock: <strong class="text-danger">Sold Out</strong>#}
+                            {#                        </p>#}
+                            {#                      </div>#}
+                            {#                    </div>#}
+                            {#                    <div class="d-flex flex-between-center px-3">#}
+                            {#                      <div><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-300"></span><span class="ms-1">(10)</span>#}
+                            {#                      </div>#}
+                            {#                      <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span class="fas fa-cart-plus"></span></a></div>#}
+                            {#                    </div>#}
+                            {#                  </div>#}
+                            {#                </div>#}
+                            {#                <div class="mb-4 col-md-6 col-lg-4">#}
+                            {#                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">#}
+                            {#                    <div class="overflow-hidden">#}
+                            {#                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="img-fluid rounded-top" src="{% static 'apps/assets/img/products/6.jpg' %}" alt="" /></a><span class="badge rounded-pill bg-success position-absolute mt-2 me-2 z-index-2 top-0 end-0">New</span>#}
+                            {#                      </div>#}
+                            {#                      <div class="p-3">#}
+                            {#                        <h5 class="fs-0"><a class="text-dark" href="app/e-commerce/product/product-details.html">Logitech G305 Gaming Mouse</a></h5>#}
+                            {#                        <p class="fs--1 mb-3"><a class="text-500" href="#!">Computer &amp; Accessories</a></p>#}
+                            {#                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3"> $95#}
+                            {#                        </h5>#}
+                            {#                        <p class="fs--1 mb-1">Shipping Cost: <strong>$20</strong></p>#}
+                            {#                        <p class="fs--1 mb-1">Stock: <strong class="text-success">Available</strong>#}
+                            {#                        </p>#}
+                            {#                      </div>#}
+                            {#                    </div>#}
+                            {#                    <div class="d-flex flex-between-center px-3">#}
+                            {#                      <div><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star-half-alt text-warning star-icon"></span><span class="fa fa-star text-300"></span><span class="ms-1">(6)</span>#}
+                            {#                      </div>#}
+                            {#                      <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span class="fas fa-cart-plus"></span></a></div>#}
+                            {#                    </div>#}
+                            {#                  </div>#}
+                            {#                </div>#}
+                            {#                <div class="mb-4 mb-lg-0 col-md-6 col-lg-4">#}
+                            {#                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">#}
+                            {#                    <div class="overflow-hidden">#}
+                            {#                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="img-fluid rounded-top" src="{% static 'apps/assets/img/products/7.jpg' %}" alt="" /></a>#}
+                            {#                      </div>#}
+                            {#                      <div class="p-3">#}
+                            {#                        <h5 class="fs-0"><a class="text-dark" href="app/e-commerce/product/product-details.html">Nikon D3200 Digital DSLR Camera</a></h5>#}
+                            {#                        <p class="fs--1 mb-3"><a class="text-500" href="#!">Camera</a></p>#}
+                            {#                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3"> $2398#}
+                            {#                        </h5>#}
+                            {#                        <p class="fs--1 mb-1">Shipping Cost: <strong>$30</strong></p>#}
+                            {#                        <p class="fs--1 mb-1">Stock: <strong class="text-success">Available</strong>#}
+                            {#                        </p>#}
+                            {#                      </div>#}
+                            {#                    </div>#}
+                            {#                    <div class="d-flex flex-between-center px-3">#}
+                            {#                      <div><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-300"></span><span class="ms-1">(5)</span>#}
+                            {#                      </div>#}
+                            {#                      <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span class="fas fa-cart-plus"></span></a></div>#}
+                            {#                    </div>#}
+                            {#                  </div>#}
+                            {#                </div>#}
+                            {#                <div class="mb-4 mb-lg-0 col-md-6 col-lg-4">#}
+                            {#                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">#}
+                            {#                    <div class="overflow-hidden">#}
+                            {#                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="img-fluid rounded-top" src="{% static 'apps/assets/img/products/5.jpg' %}" alt="" /></a><span class="badge rounded-pill bg-success position-absolute mt-2 me-2 z-index-2 top-0 end-0">New</span>#}
+                            {#                      </div>#}
+                            {#                      <div class="p-3">#}
+                            {#                        <h5 class="fs-0"><a class="text-dark" href="app/e-commerce/product/product-details.html">Apple Watch Series 4 44mm GPS Only</a></h5>#}
+                            {#                        <p class="fs--1 mb-3"><a class="text-500" href="#!">Watches &amp; Accessories</a></p>#}
+                            {#                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3"> $360#}
+                            {#                          <del class="ms-2 fs--1 text-500">$400 </del>#}
+                            {#                        </h5>#}
+                            {#                        <p class="fs--1 mb-1">Shipping Cost: <strong>$24</strong></p>#}
+                            {#                        <p class="fs--1 mb-1">Stock: <strong class="text-success">Available</strong>#}
+                            {#                        </p>#}
+                            {#                      </div>#}
+                            {#                    </div>#}
+                            {#                    <div class="d-flex flex-between-center px-3">#}
+                            {#                      <div><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="ms-1">(4)</span>#}
+                            {#                      </div>#}
+                            {#                      <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span class="fas fa-cart-plus"></span></a></div>#}
+                            {#                    </div>#}
+                            {#                  </div>#}
+                            {#                </div>#}
+                            {#                <div class="undefined col-md-6 col-lg-4">#}
+                            {#                  <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">#}
+                            {#                    <div class="overflow-hidden">#}
+                            {#                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="app/e-commerce/product/product-details.html"><img class="img-fluid rounded-top" src="{% static 'apps/assets/img/products/9.jpg' %}" alt="" /></a>#}
+                            {#                      </div>#}
+                            {#                      <div class="p-3">#}
+                            {#                        <h5 class="fs-0"><a class="text-dark" href="app/e-commerce/product/product-details.html">Nikon AF-S FX NIKKOR 24-70mm</a></h5>#}
+                            {#                        <p class="fs--1 mb-3"><a class="text-500" href="#!">Camera</a></p>#}
+                            {#                        <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3"> $956.57#}
+                            {#                        </h5>#}
+                            {#                        <p class="fs--1 mb-1">Shipping Cost: <strong>$50</strong></p>#}
+                            {#                        <p class="fs--1 mb-1">Stock: <strong class="text-success">Available</strong>#}
+                            {#                        </p>#}
+                            {#                      </div>#}
+                            {#                    </div>#}
+                            {#                    <div class="d-flex flex-between-center px-3">#}
+                            {#                      <div><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="fa fa-star text-warning"></span><span class="ms-1">(4)</span>#}
+                            {#                      </div>#}
+                            {#                      <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List"><span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"><span class="fas fa-cart-plus"></span></a></div>#}
+                            {#                    </div>#}
+                            {#                  </div>#}
+                            {#                </div>#}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light d-flex justify-content-center">
+                         <div>
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-sm btn-falcon-default me-2" href="?page={{ page_obj.previous_page_number }}">
+                        <span class="fas fa-chevron-left"></span>
+                    </a>
+                    <a class="btn btn-sm btn-falcon-default me-2" href="?page={{ page_obj.previous_page_number }}">
+                        {{ page_obj.previous_page_number }}
+                    </a>
+                {% endif %}
+                <a class="btn btn-sm btn-falcon-default text-primary me-2" href="#">{{ page_obj.number }}</a>
+                {% if page_obj.has_next %}
+                    <a class="btn btn-sm btn-falcon-default me-2" href="?page={{ page_obj.next_page_number }}">
+                        {{ page_obj.next_page_number }}
+                    </a>
+                    <a class="btn btn-sm btn-falcon-default me-2" href="?page={{ page_obj.next_page_number }}">
+                        <span class="fas fa-chevron-right"></span>
+                    </a>
+                {% endif %}
+            </div>
+
+                    </div>
+                </div>
+                <footer class="footer">
+                    <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+                        <div class="col-12 col-sm-auto text-center">
+                            <p class="mb-0 text-600">Thank you for creating with Falcon <span
+                                    class="d-none d-sm-inline-block">| </span><br class="d-sm-none"/> 2021 &copy; <a
+                                    href="https://themewagon.com">Themewagon</a></p>
+                        </div>
+                        <div class="col-12 col-sm-auto text-center">
+                            <p class="mb-0 text-600">v3.4.0</p>
+                        </div>
+                    </div>
+                </footer>
+{% endblock %}
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+
+
+ 
