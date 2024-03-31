@@ -1,7 +1,6 @@
 from django.template import Library
 
-from apps.models import Product, Wishlist
-from users.models import CustomUser
+from apps.models import Wishlist
 
 register = Library()
 

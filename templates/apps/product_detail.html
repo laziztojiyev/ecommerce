@@ -1,4 +1,4 @@
-{% extends 'apps/../base/base2.html' %}
+{% extends 'base/base2.html' %}
 {% load static %}
 {% load custom_tags %}
 {% block title %}Details{% endblock %}
@@ -20,7 +20,7 @@
                                             <div class="swiper-slide h-100"><img class="rounded-1 fit-cover h-100 w-100"
                                                                                  src="{{ product_images.image.url }}"
                                                                                  alt=""/></div>
-{#                                        {% endfor %}
+                                        {% endfor %}
                                         </div>
                                         
                                         <div class="swiper-nav">
@@ -106,7 +106,7 @@
                                              aria-labelledby="specifications-tab">
                                             <table class="table fs--1 mt-3">
                                                 <tbody>
-                                                {% for key, value in product.characteristics.items  %}
+                                                {% for key, value in product.characteristics.items|customs_tags:"0:3"  %}
                                                 <tr>
                                                     <td class="bg-100" style="width: 30%;">{{ key }}</td>
                                                     <td>{{ value }},</td>
@@ -148,100 +148,100 @@
 {#                                                </tbody>#}
 {#                                            </table>#}
                                         </div>
-                                        <div class="tab-pane fade" id="tab-reviews" role="tabpanel"
-                                             aria-labelledby="reviews-tab">
-                                            <div class="row mt-3">
-                                                <div class="col-lg-6 mb-4 mb-lg-0">
-                                                    <div class="mb-1"><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="ms-3 text-dark fw-semi-bold">Awesome support, great code 😍</span>
-                                                    </div>
-                                                    <p class="fs--1 mb-2 text-600">By Drik Smith • October 14, 2019</p>
-                                                    <p class="mb-0">You shouldn't need to read a review to see how nice
-                                                        and polished this theme is. So I'll tell you something you won't
-                                                        find in the demo. After the download I had a technical question,
-                                                        emailed the team and got a response right from the team CEO with
-                                                        helpful advice.</p>
-                                                    <hr class="my-4"/>
-                                                    <div class="mb-1"><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="fa fa-star text-warning fs--1"></span><span
-                                                            class="fa fa-star-half-alt text-warning star-icon fs--1"></span><span
-                                                            class="ms-3 text-dark fw-semi-bold">Outstanding Design, Awesome Support</span>
-                                                    </div>
-                                                    <p class="fs--1 mb-2 text-600">By Liane • December 14, 2019</p>
-                                                    <p class="mb-0">This really is an amazing template - from the style
-                                                        to the font - clean layout. SO worth the money! The demo pages
-                                                        show off what Bootstrap 4 can impressively do. Great template!!
-                                                        Support response is FAST and the team is amazing - communication
-                                                        is important.</p>
-                                                </div>
-                                                <div class="col-lg-6 ps-lg-5">
-                                                    <form>
-                                                        <h5 class="mb-3">Write your Review</h5>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Ratting: </label>
-                                                            <div class="d-block"
-                                                                 data-rater='{"starSize":32,"step":0.5}'></div>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label"
-                                                                   for="formGroupNameInput">Name:</label>
-                                                            <input class="form-control" id="formGroupNameInput"
-                                                                   type="text"/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label"
-                                                                   for="formGroupEmailInput">Email:</label>
-                                                            <input class="form-control" id="formGroupEmailInput"
-                                                                   type="email"/>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label" for="formGrouptextareaInput">Review:</label>
-                                                            <textarea class="form-control" id="formGrouptextareaInput"
-                                                                      rows="3"></textarea>
-                                                        </div>
-                                                        <button class="btn btn-primary" type="submit">Submit</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
+{#                                        <div class="tab-pane fade" id="tab-reviews" role="tabpanel"#}
+{#                                             aria-labelledby="reviews-tab">#}
+{#                                            <div class="row mt-3">#}
+{#                                                <div class="col-lg-6 mb-4 mb-lg-0">#}
+{#                                                    <div class="mb-1"><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="ms-3 text-dark fw-semi-bold">Awesome support, great code 😍</span>#}
+{#                                                    </div>#}
+{#                                                    <p class="fs--1 mb-2 text-600">By Drik Smith • October 14, 2019</p>#}
+{#                                                    <p class="mb-0">You shouldn't need to read a review to see how nice#}
+{#                                                        and polished this theme is. So I'll tell you something you won't#}
+{#                                                        find in the demo. After the download I had a technical question,#}
+{#                                                        emailed the team and got a response right from the team CEO with#}
+{#                                                        helpful advice.</p>#}
+{#                                                    <hr class="my-4"/>#}
+{#                                                    <div class="mb-1"><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="fa fa-star text-warning fs--1"></span><span#}
+{#                                                            class="fa fa-star-half-alt text-warning star-icon fs--1"></span><span#}
+{#                                                            class="ms-3 text-dark fw-semi-bold">Outstanding Design, Awesome Support</span>#}
+{#                                                    </div>#}
+{#                                                    <p class="fs--1 mb-2 text-600">By Liane • December 14, 2019</p>#}
+{#                                                    <p class="mb-0">This really is an amazing template - from the style#}
+{#                                                        to the font - clean layout. SO worth the money! The demo pages#}
+{#                                                        show off what Bootstrap 4 can impressively do. Great template!!#}
+{#                                                        Support response is FAST and the team is amazing - communication#}
+{#                                                        is important.</p>#}
+{#                                                </div>#}
+{#                                                <div class="col-lg-6 ps-lg-5">#}
+{#                                                    <form>#}
+{#                                                        <h5 class="mb-3">Write your Review</h5>#}
+{#                                                        <div class="mb-3">#}
+{#                                                            <label class="form-label">Ratting: </label>#}
+{#                                                            <div class="d-block"#}
+{#                                                                 data-rater='{"starSize":32,"step":0.5}'></div>#}
+{#                                                        </div>#}
+{#                                                        <div class="mb-3">#}
+{#                                                            <label class="form-label"#}
+{#                                                                   for="formGroupNameInput">Name:</label>#}
+{#                                                            <input class="form-control" id="formGroupNameInput"#}
+{#                                                                   type="text"/>#}
+{#                                                        </div>#}
+{#                                                        <div class="mb-3">#}
+{#                                                            <label class="form-label"#}
+{#                                                                   for="formGroupEmailInput">Email:</label>#}
+{#                                                            <input class="form-control" id="formGroupEmailInput"#}
+{#                                                                   type="email"/>#}
+{#                                                        </div>#}
+{#                                                        <div class="mb-3">#}
+{#                                                            <label class="form-label" for="formGrouptextareaInput">Review:</label>#}
+{#                                                            <textarea class="form-control" id="formGrouptextareaInput"#}
+{#                                                                      rows="3"></textarea>#}
+{#                                                        </div>#}
+{#                                                        <button class="btn btn-primary" type="submit">Submit</button>#}
+{#                                                    </form>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-          <div class="col-lg-8 swiper-container">
-            
-            <form method="post" action="{% url 'order' %}">
-                {% csrf_token %}
-                    <div class="mb-4">
-                    <label class="form-label" for="FormGroupNameInput">Soni</label>
-                    <input class="form-control" id="phone-mask" required="" name="quantity" type="number">
-                </div>
-                <div class="mb-2">
-                    <label class="form-label" for="formGroupNameInput">Ism:</label>
-                    <input class="form-control" name="name" id="formGroupNameInput" type="text">
-                </div>
-                <div class="mb-4">
-                    <label class="form-label" for="formGroupEmailInput">Telefon nomer:</label>
-                    <input class="form-control" id="phone-mask" required="" name="phone_number" type="text">
-                </div>
-                <input class="form-control" name="product" type="text" value="{{ product.id }}" hidden>
-                <span style="padding-bottom: 100px;">
-                    Ma`lumotlarni to`ldirganingizdan so`ng 5-10 daqiqa ichida bizning hodimlarimiz siz bilan bog`lanadi
-                </span>
-                <div class="d-grid gap-2 col-6 mx-auto" style="margin-top: 20px;">
-                    <button class="btn btn-primary" type="submit">Buyurtma berish</button>
-                </div>
-            </form>
-        </div>
+{#          <div class="col-lg-8 swiper-container">#}
+{#            #}
+{#            <form method="post" action="{% url 'order' %}">#}
+{#                {% csrf_token %}#}
+{#                    <div class="mb-4">#}
+{#                    <label class="form-label" for="FormGroupNameInput">Soni</label>#}
+{#                    <input class="form-control" id="phone-mask" required="" name="quantity" type="number">#}
+{#                </div>#}
+{#                <div class="mb-2">#}
+{#                    <label class="form-label" for="formGroupNameInput">Ism:</label>#}
+{#                    <input class="form-control" name="name" id="formGroupNameInput" type="text">#}
+{#                </div>#}
+{#                <div class="mb-4">#}
+{#                    <label class="form-label" for="formGroupEmailInput">Telefon nomer:</label>#}
+{#                    <input class="form-control" id="phone-mask" required="" name="phone_number" type="text">#}
+{#                </div>#}
+{#                <input class="form-control" name="product" type="text" value="{{ product.id }}" hidden>#}
+{#                <span style="padding-bottom: 100px;">#}
+{#                    Ma`lumotlarni to`ldirganingizdan so`ng 5-10 daqiqa ichida bizning hodimlarimiz siz bilan bog`lanadi#}
+{#                </span>#}
+{#                <div class="d-grid gap-2 col-6 mx-auto" style="margin-top: 20px;">#}
+{#                    <button class="btn btn-primary" type="submit">Buyurtma berish</button>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
                 </div>
 {% endblock %}
 
