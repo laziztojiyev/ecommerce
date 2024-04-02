@@ -6,7 +6,6 @@ from django.views.generic import FormView, UpdateView, TemplateView, ListView
 
 from apps.forms import UserRegistrationForm
 from users.models import CustomUser
-from users.tasks import sending_email
 
 
 class RegisterView(FormView):
@@ -16,7 +15,6 @@ class RegisterView(FormView):
 
     def form_valid(self, form):
         form.save()
-        sending_email.delay([form.data.get('email')])
         return super().form_valid(form)
 
 

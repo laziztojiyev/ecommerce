@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, FormView, TemplateView
 from django.core.mail import send_mail
 from apps.forms import OrderModelForm
 from apps.models import Product, Wishlist, ProductImage, Order, Category
+from apps.tasks import add
 from root.settings import EMAIL_HOST_USER
 
 
@@ -36,7 +37,9 @@ class SendMailView(View):
         message = 'Thank you for creating an account!'
         recipient_list = request.GET.get('email')
         start = time.time()
-        send_mail(subject, message, EMAIL_HOST_USER, [recipient_list])
+        # add(5)  # simple
+        add.delay(5)  # celery
+        # send_mail(subject, message, EMAIL_HOST_USER, [recipient_list])
         end = time.time()
         return HttpResponse(f'saytga yuborildi{end - start}')
 

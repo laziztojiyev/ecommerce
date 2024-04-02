@@ -352,5 +352,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'laziztojiyev45@gmail.com'
 EMAIL_HOST_PASSWORD = 'djnarthkacxrsbmi'
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'django-db'
