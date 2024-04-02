@@ -1,10 +1,14 @@
+import time
+
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, FormView, TemplateView
-
+from django.core.mail import send_mail
 from apps.forms import OrderModelForm
 from apps.models import Product, Wishlist, ProductImage, Order, Category
+from root.settings import EMAIL_HOST_USER
 
 
 # Create your views here.
@@ -24,6 +28,17 @@ class ProductListView(ListView):
         contex = super().get_context_data(**kwargs)
         contex['categories'] = Category.objects.all()
         return contex
+
+
+class SendMailView(View):
+    def get(self, request, *args, **kwargs):
+        subject = 'Welcome to My Site'
+        message = 'Thank you for creating an account!'
+        recipient_list = request.GET.get('email')
+        start = time.time()
+        send_mail(subject, message, EMAIL_HOST_USER, [recipient_list])
+        end = time.time()
+        return HttpResponse(f'saytga yuborildi{end - start}')
 
 
 class MarketListView(ListView):

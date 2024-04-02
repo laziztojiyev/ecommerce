@@ -106,7 +106,7 @@
                                              aria-labelledby="specifications-tab">
                                             <table class="table fs--1 mt-3">
                                                 <tbody>
-                                                {% for key, value in product.characteristics.items|customs_tags:"0:3"  %}
+                                                {% for key, value in product.characteristics.items|custom_slice:"0:4"  %}
                                                 <tr>
                                                     <td class="bg-100" style="width: 30%;">{{ key }}</td>
                                                     <td>{{ value }},</td>
