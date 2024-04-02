@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import StackedInline
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from apps.forms import ProductModelForm
@@ -23,8 +25,9 @@ class ProductImagesStackedInline(StackedInline):
 class ProductAdmin(admin.ModelAdmin):
     def form_description(self, obj):
         return mark_safe(obj.Description)
+
     inlines = (ProductImagesStackedInline,)
-    list_display = ['id', 'name', 'form_description', 'price', 'quantity', 'image_show', 'category']
+    list_display = ['id', 'name', 'form_description', 'price', 'quantity', 'image_show', 'category_url']
     form = ProductModelForm
     list_per_page = 10
     list_max_show_all = 20
@@ -47,7 +50,12 @@ class ProductAdmin(admin.ModelAdmin):
 
     image_show.description = 'images'
 
+    def category_url(self, obj: Product):
+        url = reverse('admin:apps_category_change', args=(obj.category_id,))
+        return mark_safe(f'<a href="{url}">{obj.category}')
 
+    category_url.short_description = 'biror nima'
+    form_description.short_description = 'tavsilot'
 
 
 @admin.register(Wishlist)
@@ -68,3 +76,6 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_superuser
