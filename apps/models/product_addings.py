@@ -49,9 +49,6 @@ class Cart(BaseModel):
         verbose_name_plural = 'savatchalar'
 
 
-
-
-
 class Order(BaseModel):
     name = CharField(max_length=255)
     phone_number = CharField(max_length=20)

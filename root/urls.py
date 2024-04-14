@@ -5,8 +5,6 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.urls import path, include
 
-from django.urls import path
-
 
 def trigger_error(request):
     division_by_zero = 1 / 0

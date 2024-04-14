@@ -5,25 +5,23 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, FormView, TemplateView
-from django.core.mail import send_mail
+
 from apps.forms import OrderModelForm
 from apps.models import Product, Wishlist, ProductImage, Order, Category
-from apps.tasks import add
-from root.settings import EMAIL_HOST_USER
+from apps.tasks import send_mail_func
 
 
 # Create your views here.
 class ProductListView(ListView):
-    model = Product
     template_name = 'apps/product grid.html'
     context_object_name = 'products'
     paginate_by = 9
 
     def get_queryset(self):
-        category_id = self.request.GET.get('category', None)
+        category_id = self.request.path.split('/')[-1]
         if category_id:
-            return self.queryset.filter(category_id=category_id)
-        return super().get_queryset()
+            return Product.objects.filter(category_id=category_id)
+        return Product.objects.all()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         contex = super().get_context_data(**kwargs)
@@ -38,10 +36,22 @@ class SendMailView(View):
         recipient_list = request.GET.get('email')
         start = time.time()
         # add(5)  # simple
-        add.delay(5)  # celery
+        send_mail_func.delay()  # celery
         # send_mail(subject, message, EMAIL_HOST_USER, [recipient_list])
         end = time.time()
         return HttpResponse(f'saytga yuborildi{end - start}')
+
+
+class FilteredCategoriesListView(ListView):
+    model = Product
+    template_name = 'apps/categories.html'
+    context_object_name = 'category'
+
+    def get_queryset(self):
+        category_id = self.request.GET.get('category', None)
+        if category_id:
+            return self.queryset.filter(category_id=category_id)
+        return super().get_queryset()
 
 
 class MarketListView(ListView):
@@ -96,7 +106,7 @@ class OrderView(FormView):
 
 
 class OrderedView(DetailView):
-    template_name = 'apps/ordered.html'
+    template_name = 'apps/ordered_list.html'
     model = Order
     context_object_name = 'order'
 

@@ -1,5 +1,5 @@
+from django.contrib.admin import StackedInline, ModelAdmin
 from django.contrib import admin
-from django.contrib.admin import StackedInline
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -10,7 +10,7 @@ from apps.models import Category, Product, Wishlist, Cart, ProductImage, SiteSet
 
 # Register your models here.
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ModelAdmin):
     search_fields = ['name']
 
 
@@ -22,7 +22,7 @@ class ProductImagesStackedInline(StackedInline):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ModelAdmin):
     def form_description(self, obj):
         return mark_safe(obj.Description)
 
@@ -59,17 +59,17 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(Wishlist)
-class WishlistAdmin(admin.ModelAdmin):
+class WishlistAdmin(ModelAdmin):
     pass
 
 
 @admin.register(Cart)
-class CartAdmin(admin.ModelAdmin):
+class CartAdmin(ModelAdmin):
     pass
 
 
 @admin.register(SiteSettings)
-class SiteSettingsAdmin(admin.ModelAdmin):
+class SiteSettingsAdmin(ModelAdmin):
 
     def has_add_permission(self, request):
         return False
