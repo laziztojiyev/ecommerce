@@ -1,5 +1,5 @@
 import time
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -85,7 +85,7 @@ class ProductDetailView(DetailView):
     context_object_name = 'product'
 
 
-class WishlistView(View):
+class WishlistView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         wishlist, created = Wishlist.objects.get_or_create(user=request.user, product_id=kwargs['product_id'])
         if not created:

@@ -73,6 +73,8 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 LOGIN_REDIRECT_URL = 'product_list'
 
+LOGIN_URL = '/admin/login/'
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 

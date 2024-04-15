@@ -6,8 +6,6 @@ from django.shortcuts import redirect
 from django.urls import path, include
 
 
-def trigger_error(request):
-    division_by_zero = 1 / 0
 
 
 def logout_v(req):
@@ -16,7 +14,6 @@ def logout_v(req):
 
 
 urlpatterns = [
-    path('sentry-debug/', trigger_error),
     path('admin/logout/', logout_v),
     path('admin/', admin.site.urls),
     path('', include('apps.urls')),
