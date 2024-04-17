@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, FormView, TemplateView
 
 from apps.forms import OrderModelForm
 from apps.models import Product, Wishlist, ProductImage, Order, Category
+from apps.models.product_addings import Threads
 from apps.tasks import send_mail_func
 
 
@@ -121,3 +122,9 @@ class WishlistRemoveView(View):
     def get(self, request, product_id):
         Wishlist.objects.filter(product_id=product_id, user_id=self.request.user.id).delete()
         return redirect(reverse('wishlist_list'))
+
+
+class ThreadsListView(ListView):
+    model = Threads
+    template_name = 'apps/threads.html'
+    context_object_name = 'threads'

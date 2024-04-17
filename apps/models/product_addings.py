@@ -50,10 +50,22 @@ class Cart(BaseModel):
 
 
 class Order(BaseModel):
+    class Status(models.TextChoices):
+        NEW = 'yangi'
+        READY = 'dostavkaga tayyor'
+        DELIVERING = 'yetkazilmoqda'
+        DELIVERED = 'yetkazib berildi'
+        ARCHIVE = 'arxivlandi'
+        CANCELLED = 'bekor qilindi'
+        BROKEN = 'nosoz'
+        ARRIVED = 'qaytib keldi'
+        HOLD = 'hold'
     name = CharField(max_length=255)
     phone_number = CharField(max_length=20)
     product = ForeignKey('apps.Product', CASCADE)
     quantity = PositiveIntegerField(default=1)
+    status = CharField(max_length=55, choices=Status, default=Status.NEW)
+
 
     class Meta:
         verbose_name = 'buyurtma'
@@ -69,3 +81,9 @@ class SiteSettings(BaseModel):
 
     def __str__(self):
         return f'yetkazib berish - {self.shipping_change}'
+
+
+class Threads(BaseModel):
+    name = CharField(max_length=255)
+    user = ForeignKey('users.CustomUser', CASCADE, 'threads')
+    product = ForeignKey('apps.Product', CASCADE, 'product_threads')
