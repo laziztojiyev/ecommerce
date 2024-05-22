@@ -121,7 +121,7 @@
                                 </li>
                             </ul>
                                                         <ul class="nav collapse show" id="dashboard">
-                                <li class="nav-item"><a class="nav-link active" href="{% url 'order' %}" aria-expanded="false">
+                                <li class="nav-item"><a class="nav-link active" href="{% url 'ordered_list' %}" aria-expanded="false">
                                     <div class="d-flex align-items-center"><span
                                             class="nav-link-text ps-1">Buyurtmalar</span>
                                     </div>
@@ -148,7 +148,7 @@
                                 </li>
                             </ul>
                                                 <ul class="nav collapse show" id="dashboard">
-                                <li class="nav-item"><a class="nav-link active" href="index.html" aria-expanded="false">
+                                <li class="nav-item"><a class="nav-link active" href="{% url 'stream' %}" aria-expanded="false">
                                     <div class="d-flex align-items-center"><span
                                             class="nav-link-text ps-1">Oqim</span>
                                     </div>
@@ -540,7 +540,7 @@
                                             class="fas fa-crown me-1"></span><span>{{ user.first_name }}</span></a>
 
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#!">Set status</a>
+                                    <a class="dropdown-item" href="#!">operatorlar</a>
                                     <a class="dropdown-item" href="pages/user/profile.html">Profile &amp; account</a>
                                     <a class="dropdown-item" href="#!">Feedback</a>
 
@@ -777,13 +777,15 @@
     <script src="https://unpkg.com/imask"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+    <script src="https://kit.fontawesome.com/1257678c77.js" crossorigin="anonymous"></script>
     <script>
     $('#phone-mask').inputmask({
         "mask": "+\\9\\98(99) 999-99-99"
     });
     $('#messages-modal').modal('show');
 </script>
-
-  </body>
-
+  
+  {% block javascript %}
+  {% endblock %}
+</body>
 </html>

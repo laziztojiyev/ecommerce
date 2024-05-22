@@ -14,11 +14,10 @@ from apps.models import BaseModel
 class Product(BaseModel):
     name = CharField(max_length=255)
     price = DecimalField(max_digits=10, decimal_places=2)
-    slug = SlugField(max_length=255, null=True, blank=True)
+    slug = SlugField(max_length=255, null=True, blank=True, editable=False)
     Description = RichTextField()
-    category = ForeignKey('apps.Category', CASCADE)
+    category = ForeignKey('apps.Category', CASCADE, related_name='products')
     discount = IntegerField()
-    orders = ForeignKey('apps.Order', CASCADE, related_name='orderss')
     characteristics = JSONField(default=dict)
     quantity = PositiveIntegerField(default=0)
     site_settings = ForeignKey('apps.SiteSettings', CASCADE, 'site_settings')
@@ -65,14 +64,6 @@ class Product(BaseModel):
     @property
     def add_shipping(self):
         return self.sell_price + 30000
-
-    @property
-    def remove_quantity(self):
-        if self.quantity >= self.orders.quantity:
-            self.quantity -= self.orders.quantity
-            return self.quantity
-        else:
-            return f'omborda {self.quantity} ta mahsulot bor'
 
 
 class ProductImage(models.Model):

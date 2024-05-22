@@ -2,9 +2,9 @@ import re
 
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm
+from django.forms import ModelForm, ModelChoiceField
 
-from apps.models import Order, Product
+from apps.models import Order, Product, Threads
 from users.models import CustomUser
 
 
@@ -53,3 +53,11 @@ class OrderModelForm(ModelForm):
         if not re.match(r'^\+998\(\d{2}\) \d{3}-\d{2}-\d{2}$', phone_number):
             raise forms.ValidationError("Invalid phone number format. Please use the format +998(__) ___-__-__")
         return phone_number
+
+
+class StreamModelForm(ModelForm):
+    product = ModelChoiceField(queryset=Product.objects.all())
+
+    class Meta:
+        model = Threads
+        fields = ('name', 'product')

@@ -1,6 +1,7 @@
 {% extends 'base/base2.html' %}
 {% load static %}
 {% load custom_tags %}
+
 {% block content %}
     <div class="card-body">
         <!-- Modal -->
@@ -15,58 +16,20 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" class="form-class">
-                            <input type="hidden" name="csrfmiddlewaretoken"
-                                   value="7EuuwKVbGxHsOsMSizO6UgKjBfj5hBUgzMopUS6mmRDuwOA1fMn4vUaEjLpC8ilI">
-                            <input name="product_id" type="hidden" id="hidden_product" value="test">
-
-                            Oqim nomi <input type="text" name="title" class="form-control" placeholder=""
-                                             mt-2="Oqim uchun nom kiriting" required="" id="id_title">
-
-                            Chegirma <input type="text" name="discount" class="form-control" placeholder=""
-                                            mt-2="Chegirma miqdori: {{ product.benefit }} so'mgacha" id="id_discount">
-
+                        <form method="POST" action="{% url 'stream' %}" class="form-class">
+                            {% csrf_token %}
+                            <input  id="hidden_product" value="test" name="product">
+                            Oqim nomi <input type="text" name="name" class="form-control" placeholder="">
+                            Chegirma <input type="text" name="discount" class="form-control" placeholder="">
                             Qo'shimcha foyda <input type="text" name="additional_benefit" class="form-control"
-                                                    placeholder="" mt-2="Qo'shimcha foyda: " id="id_additional_benefit">
-
+                                                    placeholder="">
                             Pullik dostavka <input type="checkbox" name="paid_delivery" id="id_paid_delivery">
-
                             <input type="submit" class="btn btn-primary mt-4" value="Oqim yaratish">
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
-                <div class="modal-content position-relative">
-                    <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
-                        <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
-                            data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-0">
-                        <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
-                            <h4 class="mb-1" id="modalExampleDemoLabel">Add a new illustration </h4>
-                        </div>
-                        <div class="p-4 pb-0">
-                            <form method="POST" class="form-class">
-    
-    
-    
-    
-    
-                                <input type="submit" class="btn btn-primary mt-4" value="Oqim yaratish">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-primary" type="button">Understood </button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <div class="container">
             <br>
             <br>
@@ -106,12 +69,12 @@
 
                     <div class="col-sm-4 p-2">
                         <div class="card">
-                            <a href="{{ market.name }}" target="_blank">
-                                <img class="card-img-top" src="{{ market.images.first.image.url }}" alt="Zikr ring">
+                            <a href="{% url 'stream_detail' market.pk %}" target="_blank">
+                                <img class="card-img-top" src="{{ market.images.first.image.url }}" alt="{{ market.name }}">
                             </a>
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <a href="{{ market.name }}" target="_blank">
+                                    <a href="{% url 'stream_detail' market.pk %}" target="_blank">
                                         {{ market.name }}
                                     </a>
                                 </h5>
@@ -135,10 +98,10 @@
                                class="btn bg-danger text-white mt-2">Reklama
                                 Posti</a>
                             <button class="btn btn-primary btn_open_modal" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" name="409">
+                                    data-bs-target="#exampleModal" name="{{ market.id }}">
                                 Oqim yaratish
                             </button>
-                            <a href="/admin_page/product/409" class="btn bg-danger text-white mt-2">Batafsil</a>
+                            <a href="{% url 'stream_detail' market.pk %}" class="btn bg-danger text-white mt-2">Batafsil</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -157,4 +120,14 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascript %}
+	
+    <script>
+        $('.btn_open_modal').on('click', function () {
+            let product_id = $(this).attr('name');
+            console.log(product_id);
+            $('#hidden_product').val(product_id);
+        })
+    </script>
 {% endblock %}

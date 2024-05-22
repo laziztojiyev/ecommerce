@@ -53,7 +53,7 @@
                       <del class="me-1">{{ product.price }}</del><strong>-{{ product.discount }}%</strong></span></h4>
                     <p class="fs--1 mb-1"><span>Shipping Cost: </span><strong>{{ product.site_settings }}</strong></p>
                     <p class="fs--1">Stock: <strong class="text-success">{{ product.stock }}</strong></p>
-                    <p class="fs--1 mb-1"><span>Quantity: </span><strong>{{ product.quantity }}</strong></p>
+                    <p class="fs--1 mb-1"><span>Quantity: </span><strong>{{ product.remove_quantity }}</strong></p>
                     <div class="col-auto px-0">
                         <a class="btn btn-sm btn-outline-danger border-300"
                            {% if user.id|has_wishlist:product.id %}style="background-color: red; color : white"

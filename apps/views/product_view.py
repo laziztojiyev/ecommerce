@@ -1,14 +1,10 @@
 import time
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.urls import reverse
-from django.views import View
-from django.views.generic import ListView, DetailView, FormView, TemplateView
 
-from apps.forms import OrderModelForm
-from apps.models import Product, Wishlist, ProductImage, Order, Category
-from apps.models.product_addings import Threads
+from django.http import HttpResponse
+from django.views import View
+from django.views.generic import ListView, DetailView, TemplateView
+
+from apps.models import Product, ProductImage, Category
 from apps.tasks import send_mail_func
 
 
@@ -84,47 +80,3 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'apps/product_detail.html'
     context_object_name = 'product'
-
-
-class WishlistView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        wishlist, created = Wishlist.objects.get_or_create(user=request.user, product_id=kwargs['product_id'])
-        if not created:
-            wishlist.delete()
-        return redirect('product_list')
-
-
-class OrderView(FormView):
-    form_class = OrderModelForm
-    template_name = 'apps/product_detail.html'
-
-    def form_valid(self, form):
-        obj = form.save()
-        return redirect(reverse('ordered', kwargs={'pk': obj.pk}))
-
-    def form_invalid(self, form):
-        return redirect(reverse('product_detail', kwargs={'pk': self.request.POST.get('product')}))
-
-
-class OrderedView(DetailView):
-    template_name = 'apps/ordered_list.html'
-    model = Order
-    context_object_name = 'order'
-
-
-class WishlistShowView(ListView):
-    model = Wishlist
-    template_name = 'apps/wishlist_list.html'
-    context_object_name = 'wishlists'
-
-
-class WishlistRemoveView(View):
-    def get(self, request, product_id):
-        Wishlist.objects.filter(product_id=product_id, user_id=self.request.user.id).delete()
-        return redirect(reverse('wishlist_list'))
-
-
-class ThreadsListView(ListView):
-    model = Threads
-    template_name = 'apps/threads.html'
-    context_object_name = 'threads'
